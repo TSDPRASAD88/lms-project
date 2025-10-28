@@ -55,7 +55,7 @@ const DashboardPage = () => {
             </p>
           </Card>
         </div>
-
+s
         <div className="lg:col-span-1">
           <Card>
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">System Status</h2>
