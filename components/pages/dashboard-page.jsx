@@ -2,9 +2,9 @@
 import React from 'react';
 
 // Import reusable components using the stable @/ alias
-import MainLayout from '@/components/layout/main-layout';
-import Sidebar from '@/components/layout/sidebar';
-import Navbar from '@/components/layout/navbar';
+import MainLayout from '@/components/Layout/main-layout';
+import Sidebar from '@/components/Layout/sidebar';
+import Navbar from '@/components/Layout/navbar';
 import Card from '@/components/global/card';
 
 const DashboardPage = () => {
