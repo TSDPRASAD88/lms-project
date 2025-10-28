@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react'; 
 import toast from 'react-hot-toast'; // <-- NEW IMPORT
 
-// Import components from the previously built folders
-import Button from '../global/button';
-import InputField from '../global/input-field';
-import Card from '../global/card'; 
-import Navbar from '../layout/navbar'; 
+// Import components using the absolute @/ alias
+import Button from '@/components/global/button'; // <-- FIXED
+import InputField from '@/components/global/input-field'; // <-- FIXED
+import Card from '@/components/global/card'; // <-- FIXED
+import Navbar from '@/components/layout/navbar'; // <-- FIXED
 
 const SignInPage = () => {
   const [form, setForm] = useState({ email: '', password: '' });

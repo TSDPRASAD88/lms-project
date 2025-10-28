@@ -1,11 +1,11 @@
 "use client";
 import React from 'react';
 
-// Import reusable components
-import MainLayout from '../layout/main-layout';
-import Sidebar from '../layout/sidebar';
-import Navbar from '../layout/navbar';
-import Card from '../global/card';
+// Import reusable components using the stable @/ alias
+import MainLayout from '@/components/layout/main-layout';
+import Sidebar from '@/components/layout/sidebar';
+import Navbar from '@/components/layout/navbar';
+import Card from '@/components/global/card';
 
 const DashboardPage = () => {
   // Static placeholder data for dashboard cards
