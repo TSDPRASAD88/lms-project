@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react'; 
+import toast from 'react-hot-toast'; // <-- NEW IMPORT
 
 // Import components from the previously built folders
 import Button from '../global/button';
@@ -8,42 +11,75 @@ import Card from '../global/card';
 import Navbar from '../layout/navbar'; 
 
 const SignInPage = () => {
-  // Use state only for visual management (static, no actual auth logic here)
   const [form, setForm] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const router = useRouter(); 
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!form.email || !form.password) {
-        setError('Please enter both email and password.');
-        return;
+      toast.error('Email and password are required.'); // <-- TOAST VALIDATION
+      return;
     }
 
-    // --- STATIC PLACEHOLDER LOGIC ---
     setIsLoading(true);
-    console.log('Static Sign In Attempt:', form);
     
-    // Simulate network delay and failure for static visual demo
-    setTimeout(() => {
-        setIsLoading(false);
-        // Display a simulated error
-        setError('Static simulation: Invalid credentials. (No real backend connection)');
-    }, 1500);
-    // --------------------------------
+    // Show persistent loading toast
+    const loadingToast = toast.loading('Signing you in...', {
+      duration: Infinity,
+    });
 
+    try {
+      // --- NEXTAUTH LOGIN LOGIC ---
+      const res = await signIn("credentials", { 
+        redirect: false,
+        email: form.email,
+        password: form.password
+      });
+      
+      if (res?.error) {
+        toast.dismiss(loadingToast);
+        toast.error("Invalid credentials. Please check your email and password."); // <-- TOAST ERROR
+        return;
+      }
+      
+      if (res?.ok) {
+        toast.dismiss(loadingToast);
+        toast.success('Login successful! Redirecting...'); // <-- TOAST SUCCESS
+        
+        // Fetch session data to determine role for accurate redirection
+        setTimeout(async () => {
+          const sessionRes = await fetch('/api/auth/session');
+          const session = await sessionRes.json();
+          const role = session?.user?.role;
+          
+          if (role === 'admin') {
+            router.push('/admin-dashboard');
+          } else if (role === 'student') {
+            router.push('/student-dashboard');
+          } else {
+            console.log("Login successful, but role is undefined:", session);
+            router.push('/'); // Fallback
+          }
+        }, 100);
+      }
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      toast.error("An unexpected error occurred. Please try again."); // <-- TOAST CATCH
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       <Navbar>
-        {/* Placeholder for Navbar content like a link to Home */}
         <a href="/" className="text-white hover:text-gray-200 transition">Home</a>
       </Navbar>
       
@@ -51,11 +87,7 @@ const SignInPage = () => {
         <Card className="max-w-md w-full">
           <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Sign In to LMS</h2>
           
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded" role="alert">
-              {error}
-            </div>
-          )}
+          {/* Removed local error display: {error && (...)} */}
           
           <form onSubmit={handleSubmit}>
             <InputField

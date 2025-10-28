@@ -1,45 +1,47 @@
+// app/signup/page.jsx
+
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-// Import reusable components
-import Navbar from '../../components/layout/navbar';
-import InputField from '../../components/global/input-field';
-import Button from '../../components/global/button';
-import Card from '../../components/global/card'; // Added Card for structure
+import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast'; // <--- THIS LINE IS MISSING OR BROKEN!
+// FIX PATHS HERE: Go up two levels (out of 'signup' AND 'app')
+import Navbar from '../../components/layout/navbar'; // This path was already correct
+import InputField from '../../components/global/input-field'; // <-- FIXED
+import Button from '../../components/global/button'; // <-- FIXED
+import Card from '../../components/global/card'; // <-- FIXED
 
 const SignupPage = () => {
   const [form, setForm] = useState({ 
     email: '', 
     password: '', 
     name: '', 
-    role: 'student' // Default role
+    role: 'student'
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError('');
-    setSuccess('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
     
-    // Client-side quick check
     if (!form.email || !form.password || !form.name) {
-      setError('Please fill in all required fields.');
+      toast.error('All fields are required.'); // <-- TOAST VALIDATION
       return;
     }
     
     setIsLoading(true);
     
+    // Toast 1: Registration loading
+    const loadingToast = toast.loading('Creating your account...', {
+      duration: Infinity,
+    });
+    
     try {
+      // 1. CALL REGISTRATION API
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,23 +51,40 @@ const SignupPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        // Handle validation errors from the API route (status 400)
-        setError(data.error || 'Registration failed');
+        toast.dismiss(loadingToast);
+        toast.error(data.error || 'Registration failed. Please try again.'); // <-- TOAST REGISTRATION FAILURE
         return;
       }
 
-      // Successful registration
-      setSuccess('Registration successful! Redirecting to login...');
-      setForm({ email: '', password: '', name: '', role: 'student' }); // Clear form
+      toast.dismiss(loadingToast);
+      
+      // Toast 2: Login loading
+      const loginToast = toast.loading('Registration successful! Logging you in...', {
+        duration: Infinity,
+      });
 
-      // Redirect to login page after 2 seconds (as per sample)
-      setTimeout(() => {
-        router.push('/signin');
-      }, 2000);
+      // 2. AUTO SIGN-IN using credentials
+      const signInResponse = await signIn('credentials', {
+        redirect: false,
+        email: form.email,
+        password: form.password,
+      });
+
+      if (signInResponse?.ok) {
+        toast.dismiss(loginToast);
+        toast.success(`Welcome ${form.name}! Redirecting to your dashboard...`); // <-- TOAST FINAL SUCCESS
+        
+        // 3. ROLE-BASED REDIRECT
+        const dashboardPath = form.role === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+        router.replace(dashboardPath);
+      } else {
+        toast.dismiss(loginToast);
+        toast.error('Registration succeeded, but automatic login failed. Please sign in manually.'); // <-- TOAST LOGIN FAILURE
+      }
 
     } catch (err) {
-      // Handle network errors
-      setError('An unexpected network error occurred.');
+      toast.dismiss(loadingToast);
+      toast.error('An unexpected error occurred. Please try again.');
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -82,17 +101,7 @@ const SignupPage = () => {
         <Card className="max-w-md w-full">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Create an Account</h2>
           
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 text-sm rounded" role="alert">
-              {error}
-            </div>
-          )}
-          
-          {success && (
-            <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 text-sm rounded" role="alert">
-              {success}
-            </div>
-          )}
+          {/* Removed local error/success displays */}
           
           <form onSubmit={handleSubmit}>
             {/* Full Name Input */}
@@ -156,9 +165,13 @@ const SignupPage = () => {
             
             <div className="mt-4 text-center text-sm text-gray-600">
               Already have an account?{' '}
-              <a href="/signin" className="text-indigo-600 hover:text-indigo-800 underline font-medium">
+              <button
+                type="button"
+                onClick={() => router.push('/signin')}
+                className="text-indigo-600 hover:text-indigo-800 underline font-medium"
+              >
                 Sign In
-              </a>
+              </button>
             </div>
           </form>
         </Card>

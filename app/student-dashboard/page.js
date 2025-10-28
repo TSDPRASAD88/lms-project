@@ -1,10 +1,10 @@
-// app/dashboard/page.js
+// app/student-dashboard/page.js
 
-// Import the refactored component from its new location
+// Import the component logic
 import StudentDashboardPage from '../../components/pages/student-dashboard-page';
 
-// This file registers the /dashboard route and renders the student component.
-export default function DashboardRoute() {
+// This file registers the /student-dashboard route and renders the student component.
+export default function StudentDashboardRoute() {
   return (
     <StudentDashboardPage />
   );

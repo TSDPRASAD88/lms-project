@@ -1,5 +1,10 @@
 "use client";
-import React from 'react';
+import React from 'react'; // useEffect, useSession, and useRouter are no longer needed
+
+// Imports related to manual authentication are removed:
+// import { useSession } from 'next-auth/react';
+// import { useRouter } from 'next/navigation';
+// import { useEffect } from 'react';
 
 // Import reusable components
 import MainLayout from '../layout/main-layout';
@@ -7,11 +12,17 @@ import Sidebar from '../layout/sidebar';
 import Navbar from '../layout/navbar';
 import Card from '../global/card';
 
-// Note: You must ensure you have a CourseCard component in components/Course/CourseCard.jsx
-// or a similar path, as was referenced in the original dashboard planning.
-// import CourseCard from '../Course/CourseCard'; 
-
 const StudentDashboardPage = () => {
+  // const { data: session, status } = useSession(); // Removed
+  // const router = useRouter(); // Removed
+
+  // The entire useEffect hook with security checks is removed.
+
+  // The client console log is removed: console.log('STUDENT SESSION LOGGED (Browser-side):', session?.user);
+
+  // 1. The conditional loading/authentication block is removed.
+  // The middleware guarantees an authorized user reaches this point.
+  
   // Static placeholder data for student progress
   const courses = [
     { id: 1, title: "Introduction to Web", progress: "60%", lessons: 8 },
@@ -19,8 +30,8 @@ const StudentDashboardPage = () => {
     { id: 3, title: "Full-Stack Mastery", progress: "0%", lessons: 1 },
   ];
 
+  // 2. Render the actual dashboard content
   return (
-    // Pass role="student" to the Sidebar component
     <MainLayout 
       sidebar={<Sidebar role="student" />} 
       navbar={
@@ -52,7 +63,7 @@ const StudentDashboardPage = () => {
         </Card>
       </section>
 
-      {/* 2. Enrolled Courses List (replace CourseCard placeholders) */}
+      {/* 2. Enrolled Courses List */}
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">My Enrolled Courses</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
