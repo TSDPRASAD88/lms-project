@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast'; // <--- THIS LINE IS MISSING OR BROKEN!
-// FIX PATHS HERE: Go up two levels (out of 'signup' AND 'app')
-import Navbar from '../../components/layout/navbar'; // This path was already correct
-import InputField from '../../components/global/input-field'; // <-- FIXED
-import Button from '../../components/global/button'; // <-- FIXED
-import Card from '../../components/global/card'; // <-- FIXED
+// Use the absolute @/ alias to resolve paths from the project root
+import Navbar from '@/components/layout/navbar'; 
+import InputField from '@/components/global/input-field'; 
+import Button from '@/components/global/button'; 
+import Card from '@/components/global/card';
 
 const SignupPage = () => {
   const [form, setForm] = useState({ 
