@@ -2,8 +2,8 @@
 import React from 'react';
 
 // Import layout and global components using the absolute @/ alias
-import Navbar from '@/components/Layout/navbar'; 
-import Footer from '@/components/Layout/footer';
+import Navbar from '@/components/Layout/Navbar'; 
+import Footer from '@/components/Layout/Footer';
 import Button from '@/components/global/button';
 
 export default function HomePage() {
