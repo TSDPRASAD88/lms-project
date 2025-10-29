@@ -7,9 +7,9 @@ import React from 'react'; // useEffect, useSession, and useRouter are no longer
 // import { useEffect } from 'react';
 
 // Import reusable components using the stable @/ alias
-import MainLayout from '@/components/Layout/MainLayout';
-import Sidebar from '@/components/Layout/Sidebar';
-import Navbar from '@/components/Layout/Navbar';
+import MainLayout from '@/components/layout/MainLayout';
+import Sidebar from '@/components/layout/Sidebar';
+import Navbar from '@/components/layout/Navbar';
 import Card from '@/components/global/card';
 
 const StudentDashboardPage = () => {
