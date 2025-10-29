@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React from 'react';//
 
 const Footer = () => (
   <footer className="w-full bg-gray-100 text-gray-600 text-center py-4 border-t border-gray-200">
