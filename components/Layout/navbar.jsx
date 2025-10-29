@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React from 'react';//
 
 const Navbar = ({ children }) => (
   <nav className="w-full bg-indigo-700 text-white px-6 py-4 flex items-center justify-between shadow-md">

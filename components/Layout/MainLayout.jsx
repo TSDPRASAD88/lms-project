@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React from 'react';//
 
 // The MainLayout component structures the entire page using the other layout components.
 const MainLayout = ({ children, sidebar, navbar, footer }) => (
