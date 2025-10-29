@@ -7,7 +7,7 @@ import React from 'react'; // useEffect, useSession, and useRouter are no longer
 // import { useEffect } from 'react';
 
 // Import reusable components using the stable @/ alias
-import MainLayout from '@/components/layout/MainLayout';
+import MainLayout from '@/components/layout/MainLayout.jsx';
 import Sidebar from '@/components/layout/Sidebar.jsx';
 import Navbar from '@/components/layout/Navbar.jsx';
 import Card from '@/components/global/card';
