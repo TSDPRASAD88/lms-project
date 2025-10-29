@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'; // <-- NEW IMPORT
 import Button from '@/components/global/button'; // <-- FIXED
 import InputField from '@/components/global/input-field'; // <-- FIXED
 import Card from '@/components/global/card'; // <-- FIXED
-import Navbar from '@/components/layout/Navbar.jsx'; // <-- FIXED
+import Navbar from '@/components/layoute/nNavbar.jsx'; // <-- FIXED
 
 const SignInPage = () => {
   const [form, setForm] = useState({ email: '', password: '' });

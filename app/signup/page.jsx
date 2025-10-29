@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast'; // <--- THIS LINE IS MISSING OR BROKEN!
 // Use the absolute @/ alias to resolve paths from the project root
-import Navbar from '@/components/layout/Navbar';
+import Navbar from '@/components/layoute/nNavbar';
 import InputField from '@/components/global/input-field'; 
 import Button from '@/components/global/button'; 
 import Card from '@/components/global/card';
