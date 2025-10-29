@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Import layout and global components using the absolute @/ alias
-import Navbar from '@/components/layout/navbar'; 
+import Navbar from '@/components/layout/Navbar'; 
 import Footer from '@/components/layout/footer';
 import Button from '@/components/global/button';
 
